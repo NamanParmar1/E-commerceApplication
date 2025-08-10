@@ -144,8 +144,8 @@ spring-boot-course-main/
 │   │   ├── service/        # Business logic (with caching)
 │   │   └── util/           # Utility classes
 │   ├── src/main/resources/
-│   │   └── application.properties
-│   └── REDIS_SETUP.md      # Redis setup documentation
+│       └── application.properties
+│   
 │
 ├── ecom-frontend/
 │   ├── src/
@@ -380,9 +380,6 @@ The application creates default users on startup:
 | seller1 | password2 | SELLER |
 | admin | adminPass | ADMIN |
 
-## 📱 Screenshots
-
-*Note: Add screenshots of your application here*
 
 ## 🧪 Testing
 
