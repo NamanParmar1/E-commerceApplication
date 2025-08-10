@@ -1,4 +1,4 @@
-# Spring Boot E-Commerce Application
+# E-Commerce Application.
 
 A full-stack e-commerce application built with Spring Boot and React, featuring a complete shopping experience with user authentication, product management, shopping cart, order processing, and payment integration.
 
