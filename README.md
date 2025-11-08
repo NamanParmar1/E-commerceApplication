@@ -140,6 +140,13 @@ TWILIO_AUTH_TOKEN=your_auth_token
 TWILIO_PHONE_NUMBER=+1234567890
 ```
 
+### 3. Start all services with Docker Compose
+```bash
+# Navigate to microservices directory
+cd ecom-backend-microservices
+
+# Start all services (includes frontend, API gateway, microservices, databases, etc.)
+docker-compose -f docker-compose-microservices.yml up -d
 ```
 
 ### 4. Wait for services to initialize
