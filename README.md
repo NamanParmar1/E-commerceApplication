@@ -1,425 +1,463 @@
-# E-Commerce Application.
+# Spring Boot E-Commerce Microservices Application
 
-A full-stack e-commerce application built with Spring Boot and React, featuring a complete shopping experience with user authentication, product management, shopping cart, order processing, and payment integration.
+A modern, scalable e-commerce platform built with microservices architecture using Spring Boot and React. This project demonstrates enterprise-level patterns including service discovery, API gateway, distributed configuration, event-driven architecture, and comprehensive monitoring.
+
+
+## 🎯 Architecture Overview
+
+This application follows a microservices architecture pattern with the following key components:
+
+- **Service Discovery** (Eureka Server)
+- **API Gateway** (Spring Cloud Gateway) with JWT validation & caching
+- **Centralized Configuration** (Spring Cloud Config)
+- **Event-Driven Communication** (Apache Kafka)
+- **Distributed Tracing** (Zipkin)
+- **Centralized Logging** (ELK Stack)
+- **Circuit Breaker Pattern** (Resilience4j)
+- **Container Orchestration** (Docker Compose)
+
 
 ## 🚀 Features
 
-### Customer Features
-- **User Authentication**: Register, login, and logout with JWT-based authentication
-- **Product Browsing**: Browse products with pagination, filtering, and search
-- **Shopping Cart**: Add/remove items, update quantities, persistent cart storage
-- **Checkout Process**: Multi-step checkout with address management
+### Core Business Features
+- **User Management**: Registration, authentication, and profile management
+- **Product Catalog**: Browse, search, and filter products with Elasticsearch
+- **Shopping Cart**: Persistent cart management with Redis caching
+- **Order Processing**: Complete order lifecycle management
 - **Payment Integration**: Secure payment processing with Stripe
-- **Order Management**: View order history and track order status
-- **User Profile**: Manage delivery addresses and account details
+- **Notifications**: Multi-channel notifications (Email, SMS, In-App)
+- **Real-time Updates**: WebSocket support for live notifications
 
-### Admin Features
-- **Dashboard**: Overview of sales, orders, and analytics
-- **Product Management**: Add, edit, delete products with image upload
-- **Category Management**: Organize products into categories
-- **Order Management**: View and update order status
-- **Seller Management**: Manage seller accounts and permissions
-- **Analytics**: Business insights and reporting
-- **Cache Management**: Clear and manage Redis cache regions
-
-### Seller Features
-- **Product Listing**: Add and manage own products
-- **Order Fulfillment**: View and process orders for their products
-- **Sales Analytics**: Track sales performance
-
-### Performance Features
-- **Redis Caching**: High-performance caching for products, categories, carts, and user data
-- **Optimized Queries**: Reduced database load through intelligent caching
-- **Cache Management API**: Admin endpoints to manage cache lifecycle
+### Technical Features
+- **Microservices Architecture**: 8+ independent services
+- **Service Discovery**: Automatic service registration and discovery
+- **Load Balancing**: Client-side load balancing with Ribbon
+- **API Gateway**: Centralized entry point with routing and filtering
+- **Distributed Configuration**: Centralized configuration management
+- **Event-Driven**: Asynchronous communication via Kafka
+- **Resilience**: Circuit breakers, retries, and timeouts
+- **Caching**: Redis for session management and caching
+- **Search**: Elasticsearch for advanced product search
+- **Security**: JWT-based authentication with Spring Security
+- **Monitoring**: Prometheus & Grafana for metrics
+- **Logging**: Centralized logging with ELK Stack
+- **Tracing**: Distributed tracing with Zipkin
+- **Documentation**: OpenAPI/Swagger for all services
 
 ## 🛠️ Tech Stack
 
-### Backend
-- **Framework**: Spring Boot 3.5.3
-- **Language**: Java 24
-- **Database**: PostgreSQL
-- **Cache**: Redis with Spring Cache
-- **Security**: Spring Security with JWT
-- **API Documentation**: Swagger/OpenAPI
-- **Payment**: Stripe API
-- **ORM**: Spring Data JPA/Hibernate
+### Backend Services
+- **Framework**: Spring Boot 3.x, Spring Cloud
+- **Language**: Java 17
 - **Build Tool**: Maven
 
+### Infrastructure & Middleware
+- **Service Discovery**: Netflix Eureka
+- **API Gateway**: Spring Cloud Gateway
+- **Configuration**: Spring Cloud Config
+- **Message Broker**: Apache Kafka
+- **Databases**: PostgreSQL (multiple instances)
+- **Cache**: Redis
+- **Search Engine**: Elasticsearch
+- **Container**: Docker & Docker Compose
+
+### Monitoring & Logging
+- **Metrics**: Prometheus & Grafana
+- **Logging**: ELK Stack (Elasticsearch, Logstash, Kibana)
+- **Tracing**: Zipkin
+- **Health Checks**: Spring Boot Actuator
+
+### Security & Resilience
+- **Authentication**: JWT with Spring Security
+- **Circuit Breaker**: Resilience4j
+- **Rate Limiting**: Spring Cloud Gateway
+
 ### Frontend
-- **Framework**: React 18.3.1
+- **Framework**: React 18.x
 - **State Management**: Redux Toolkit
-- **Routing**: React Router v7
-- **UI Framework**: Tailwind CSS + Material UI
+- **UI Components**: Material-UI, Tailwind CSS
 - **Build Tool**: Vite
-- **Form Handling**: React Hook Form
-- **HTTP Client**: Axios
-- **Payment UI**: Stripe React
+
+## 📋 Microservices
+
+| Service | Port | Description |
+|---------|------|-------------|
+| Eureka Server | 8761 | Service discovery and registration |
+| Config Server | 8888 | Centralized configuration management |
+| API Gateway | 8080 | Single entry point for all client requests |
+| Auth Service | 8081 | Authentication and authorization |
+| Product Service | 8082 | Product catalog management |
+| Cart Service | 8083 | Shopping cart management |
+| Order Service | 8084 | Order processing and management |
+| Payment Service | 8085 | Payment processing with Stripe |
+| Notification Service | 8086 | Multi-channel notifications |
 
 ## 📋 Prerequisites
 
-- Java 24 or higher
+- Java 17 or higher
 - Node.js 18 or higher
-- PostgreSQL 14 or higher
-- Redis 6.0 or higher
+- Docker & Docker Compose
 - Maven 3.8 or higher
-- Stripe account (for payment processing)
+- Git
 
-## 🔧 Installation & Setup
+### Optional (for manual setup without Docker)
+- PostgreSQL 14+
+- Redis 7+
+- Apache Kafka 3.x
+- Elasticsearch 8.x
+- Stripe account
 
-### Backend Setup
+## 🔧 Quick Start with Docker
 
-1. Clone the repository:
+### 1. Clone the repository
 ```bash
 git clone <repository-url>
-cd spring-boot-course-main/ecom-backend
+cd spring-boot-course-main/ecom-backend-microservices
 ```
 
-2. Configure PostgreSQL database:
-   - Create a database named `ecommerce`
-   - Update database credentials in `src/main/resources/application.properties`:
-   ```properties
-   spring.datasource.url=jdbc:postgresql://localhost:5432/ecommerce
-   spring.datasource.username=your_username
-   spring.datasource.password=your_password
-   ```
+### 2. Set up environment variables
+Create a `.env` file in the root directory:
+```env
+# Stripe Configuration
+STRIPE_SECRET_KEY=your_stripe_secret_key
+STRIPE_WEBHOOK_SECRET=your_webhook_secret
 
-3. Set up Redis:
-   - Install Redis:
-     - **Windows**: Download from [GitHub](https://github.com/microsoftarchive/redis/releases)
-     - **Mac**: `brew install redis`
-     - **Linux**: `sudo apt-get install redis-server`
-   - Start Redis server:
-     ```bash
-     redis-server
-     ```
-   - Redis configuration is already set in `application.properties` (default: localhost:6379)
+# JWT Configuration
+JWT_SECRET=your_jwt_secret_key
 
-4. Set up Stripe (for payment processing):
-   - Get your Stripe secret key from [Stripe Dashboard](https://dashboard.stripe.com)
-   - Set environment variable:
-   ```bash
-   export STRIPE_SECRET_KEY=your_stripe_secret_key
-   ```
+# Database Configuration (if not using Docker)
+DB_HOST=localhost
+DB_USERNAME=postgres
+DB_PASSWORD=postgres
 
-5. Run the backend:
-```bash
-mvn spring-boot:run
+# Email Configuration (Optional)
+MAIL_USERNAME=your_email@gmail.com
+MAIL_PASSWORD=your_app_password
+
+# Twilio Configuration (Optional)
+TWILIO_ACCOUNT_SID=your_account_sid
+TWILIO_AUTH_TOKEN=your_auth_token
+TWILIO_PHONE_NUMBER=+1234567890
 ```
 
-The backend will start on `http://localhost:8080`
-
-### Frontend Setup
-
-1. Navigate to frontend directory:
-```bash
-cd ../ecom-frontend
 ```
 
-2. Install dependencies:
-```bash
-npm install
+### 4. Wait for services to initialize
+The database will be automatically initialized with sample data. Wait about 30-60 seconds for all services to start.
+
+### 5. Access the applications
+- **Frontend**: http://localhost:3000
+- **API Gateway**: http://localhost:8080
+- **Eureka Dashboard**: http://localhost:8761
+- **Swagger UI**: http://localhost:8080/swagger-ui.html
+- **Kibana**: http://localhost:5601
+- **Grafana**: http://localhost:3001 (admin/admin)
+
+## 🏗️ Architecture Diagram
+
 ```
+┌─────────────────┐     ┌─────────────────┐     ┌─────────────────┐
+│   React Frontend│     │   Mobile App    │     │   Admin Portal  │
+└────────┬────────┘     └────────┬────────┘     └────────┬────────┘
+         │                       │                         │
+         └───────────────────────┴─────────────────────────┘
+                                 │
+                        ┌────────▼────────┐
+                        │   API Gateway   │
+                        │   (Port 8080)   │
+                        └────────┬────────┘
+                                 │
+         ┌───────────────────────┼───────────────────────┐
+         │                       │                       │
+         │              ┌────────▼────────┐             │
+         │              │ Eureka Server   │             │
+         │              │  (Port 8761)    │             │
+         │              └────────┬────────┘             │
+         │                       │                       │
+    ┌────▼────┐  ┌──────┐  ┌────▼────┐  ┌──────┐  ┌────▼────┐
+    │  Auth   │  │Config│  │Product  │  │ Cart │  │  Order  │
+    │Service  │◄─┤Server├─►│Service  │  │Service│ │Service │
+    │ (8081)  │  │(8888)│  │ (8082)  │  │(8083) │ │ (8084) │
+    └─────────┘  └──────┘  └─────────┘  └───────┘ └─────────┘
+         │                       │            │          │
+         │              ┌────────▼────────┐   │          │
+         │              │     Kafka       │   │          │
+         │              │   Message Bus   │◄──┴──────────┤
+         │              └────────┬────────┘              │
+         │                       │                       │
+    ┌────▼────┐            ┌────▼────┐            ┌────▼────┐
+    │Payment  │            │Notification│          │  Redis  │
+    │Service  │            │  Service   │          │  Cache  │
+    │ (8085)  │            │   (8086)   │          └─────────┘
+    └─────────┘            └────────────┘
+         │                       │
+    ┌────▼────┐            ┌────▼────┐
+    │ Stripe  │            │Email/SMS │
+    │   API   │            │ Providers│
+    └─────────┘            └──────────┘
 
-3. Configure API endpoint (if needed) in `src/api/api.js`
-
-4. Start the development server:
-```bash
-npm run dev
+    ┌─────────────────────────────────────────────────────┐
+    │                   PostgreSQL                         │
+    │  ┌────────┐ ┌────────┐ ┌────────┐ ┌────────┐      │
+    │  │auth_db │ │prod_db │ │cart_db │ │order_db│ ...  │
+    │  └────────┘ └────────┘ └────────┘ └────────┘      │
+    └─────────────────────────────────────────────────────┘
 ```
-
-The frontend will start on `http://localhost:5173`
 
 ## 📁 Project Structure
 
 ```
-spring-boot-course-main/
-├── ecom-backend/
-│   ├── src/main/java/com/ecommerce/project/
-│   │   ├── config/          # Configuration classes (including RedisConfig)
-│   │   ├── controller/      # REST API endpoints
-│   │   ├── model/          # Entity classes
-│   │   ├── payload/        # DTOs and response classes
-│   │   ├── repositories/   # Data access layer
-│   │   ├── security/       # Security configuration
-│   │   ├── service/        # Business logic (with caching)
-│   │   └── util/           # Utility classes
-│   ├── src/main/resources/
-│       └── application.properties
-│   
-│
-├── ecom-frontend/
-│   ├── src/
-│   │   ├── api/            # API integration
-│   │   ├── components/     # React components
-│   │   │   ├── admin/      # Admin panel components
-│   │   │   ├── auth/       # Authentication components
-│   │   │   ├── cart/       # Shopping cart
-│   │   │   ├── checkout/   # Checkout process
-│   │   │   ├── home/       # Homepage
-│   │   │   ├── products/   # Product listing
-│   │   │   └── shared/     # Reusable components
-│   │   ├── hooks/          # Custom React hooks
-│   │   ├── store/          # Redux store configuration
-│   │   └── utils/          # Utility functions
-│   └── package.json
-│
-└── README.md
+ecom-backend-microservices/
+├── docker/                     # Docker related files
+│   ├── config/                # Service configurations
+│   └── volumes/               # Docker volumes
+├── microservices/             # All microservices
+│   ├── eureka-server/         # Service discovery
+│   ├── config-server/         # Centralized configuration
+│   ├── api-gateway/           # API Gateway service
+│   ├── auth-service/          # Authentication service
+│   ├── product-service/       # Product management
+│   ├── cart-service/          # Shopping cart service
+│   ├── order-service/         # Order management
+│   ├── payment-service/       # Payment processing
+│   └── notification-service/  # Notification service
+├── scripts/                   # Utility scripts
+│   ├── init-all-databases.sh  # Database initialization
+│   ├── start-all-services.sh  # Start all services
+│   └── stop-all-services.sh   # Stop all services
+├── docs/                      # Documentation
+│   ├── architecture/          # Architecture documentation
+│   ├── services/              # Service-specific docs
+│   └── tech/                  # Technology guides
+├── configs/                   # Shared configurations
+│   └── application.yml        # Common config
+├── docker-compose.yml         # Main compose file
+├── docker-compose-infra.yml   # Infrastructure services
+└── README.md                  # This file
 ```
-
-
-## 🗄️ Database Schema
-
-### Entity Relationship Diagram
-
-```
-                                    ┌─────────────┐
-                                    │    ROLE     │
-                                    │─────────────│
-                                    │ roleId (PK) │
-                                    │ roleName    │
-                                    └─────────────┘
-                                           ║
-                                           ║ Many-to-Many
-                                           ║
-                                    ┌─────────────┐
-                      ┌─────────────┤    USER     ├─────────────┐
-                      │             │─────────────│             │
-                      │             │ userId (PK) │             │
-                      │             │ userName    │             │
-                      │             │ email       │             │
-                      │             │ password    │             │
-                      │             └─────────────┘             │
-                      │                    ║                    │
-                      │ 1:Many             ║ 1:1               │ 1:Many
-                      │                    ║                    │
-                      ▼                    ▼                    ▼
-               ┌─────────────┐      ┌─────────────┐      ┌─────────────┐
-               │   ADDRESS   │      │    CART     │      │   PRODUCT   │
-               │─────────────│      │─────────────│      │─────────────│
-               │ addressId   │      │ cartId (PK) │      │ productId   │
-               │ street      │      │ userId (FK) │      │ productName │
-               │ city        │      │ totalPrice  │      │ price       │
-               │ state       │      └─────────────┘      │ quantity    │
-               │ zipCode     │             ║              │ sellerId(FK)│
-               │ userId (FK) │             ║ 1:Many       │ categoryId  │
-               └─────────────┘             ▼              └─────────────┘
-                      │             ┌─────────────┐             ║
-                      │             │  CART ITEM  │             ║ Many:1
-                      │             │─────────────│             ▼
-                      │             │ cartItemId  │      ┌─────────────┐
-                      │             │ cartId (FK) │      │  CATEGORY   │
-                      │             │ productId   │      │─────────────│
-                      │             │ quantity    │      │ categoryId  │
-                      │             │ price       │      │ categoryName│
-                      │             └─────────────┘      └─────────────┘
-                      │
-                      │ Many:1
-                      ▼
-               ┌─────────────┐
-               │    ORDER    │
-               │─────────────│
-               │ orderId (PK)│
-               │ email       │
-               │ orderDate   │
-               │ totalAmount │──────────┐
-               │ addressId   │          │ 1:1
-               │ paymentId   │          ▼
-               └─────────────┘   ┌─────────────┐
-                      ║          │   PAYMENT   │
-                      ║ 1:Many   │─────────────│
-                      ▼          │ paymentId   │
-               ┌─────────────┐   │ method      │
-               │ ORDER ITEM  │   │ pgPaymentId │
-               │─────────────│   │ pgStatus    │
-               │ orderItemId │   └─────────────┘
-               │ orderId(FK) │
-               │ productId   │
-               │ quantity    │
-               │ price       │
-               └─────────────┘
-
-Legend:
-───── : One-to-One relationship
-═════ : One-to-Many relationship
-║║║║║ : Many-to-Many relationship
-```
-
-### Relationship Summary
-
-| From | To | Relationship Type | Description |
-|------|-----|------------------|-------------|
-| User | Role | Many-to-Many | Users can have multiple roles (USER, SELLER, ADMIN) |
-| User | Cart | One-to-One | Each user has one shopping cart |
-| User | Address | One-to-Many | Users can have multiple delivery addresses |
-| User | Product | One-to-Many | Sellers (users) can list multiple products |
-| User | Order | One-to-Many | Users can place multiple orders |
-| Product | Category | Many-to-One | Products belong to one category |
-| Product | CartItem | One-to-Many | A product can be in multiple cart items |
-| Product | OrderItem | One-to-Many | A product can be in multiple order items |
-| Cart | CartItem | One-to-Many | A cart contains multiple items |
-| Order | OrderItem | One-to-Many | An order contains multiple items |
-| Order | Payment | One-to-One | Each order has one payment |
-| Order | Address | Many-to-One | Orders are delivered to one address |
-
-### Core Entities
-
-1. **User**
-   - userId (PK)
-   - username (unique)
-   - email (unique)
-   - password (encrypted)
-   - roles (Many-to-Many with Role)
-   - addresses (One-to-Many with Address)
-   - cart (One-to-One with Cart)
-   - products (One-to-Many with Product - for sellers)
-
-2. **Product**
-   - productId (PK)
-   - productName
-   - description
-   - price
-   - discount
-   - quantity
-   - image
-   - category (Many-to-One with Category)
-   - seller (Many-to-One with User)
-
-3. **Order**
-   - orderId (PK)
-   - email
-   - orderDate
-   - totalAmount
-   - orderStatus
-   - orderItems (One-to-Many with OrderItem)
-   - payment (One-to-One with Payment)
-   - address (Many-to-One with Address)
-
-4. **Cart**
-   - cartId (PK)
-   - user (One-to-One with User)
-   - cartItems (One-to-Many with CartItem)
-   - totalPrice
-
-5. **Payment**
-   - paymentId (PK)
-   - paymentMethod
-   - pgPaymentId (Payment Gateway ID)
-   - pgStatus
-   - pgResponseMessage
-   - order (One-to-One with Order)
 
 ## 🔑 API Endpoints
 
-### Authentication
-- `POST /api/auth/signin` - User login
-- `POST /api/auth/signup` - User registration
-- `POST /api/auth/signout` - User logout
-- `GET /api/auth/user` - Get current user details
+### Authentication Service (via Gateway)
+```
+POST   /api/auth/signup          # User registration
+POST   /api/auth/signin          # User login
+POST   /api/auth/refresh         # Refresh JWT token
+GET    /api/auth/validate        # Validate token
+POST   /api/auth/logout          # User logout
+```
 
-### Products (Public)
-- `GET /api/public/products` - Get all products (paginated)
-- `GET /api/public/products/{id}` - Get product by ID
-- `GET /api/public/categories` - Get all categories
+### Product Service (via Gateway)
+```
+GET    /api/products             # Get all products (paginated)
+GET    /api/products/{id}        # Get product by ID
+GET    /api/products/search      # Search products (Elasticsearch)
+POST   /api/products             # Create product (Admin/Seller)
+PUT    /api/products/{id}        # Update product (Admin/Seller)
+DELETE /api/products/{id}        # Delete product (Admin)
+GET    /api/categories           # Get all categories
+```
 
-### Cart (Authenticated)
-- `POST /api/carts/products/{productId}/quantity/{quantity}` - Add to cart
-- `GET /api/carts/users/cart` - Get user's cart
-- `PUT /api/carts/products/{productId}/quantity/{quantity}` - Update cart item
-- `DELETE /api/carts/{cartId}/product/{productId}` - Remove from cart
+### Cart Service (via Gateway)
+```
+GET    /api/cart                 # Get user's cart
+POST   /api/cart/items           # Add item to cart
+PUT    /api/cart/items/{id}      # Update cart item
+DELETE /api/cart/items/{id}      # Remove item from cart
+DELETE /api/cart                 # Clear cart
+```
 
-### Orders (Authenticated)
-- `POST /api/order/users/payments/{paymentMethod}` - Place order
-- `GET /api/order/users/orders` - Get user's orders
-- `GET /api/order/users/orders/{orderId}` - Get order details
+### Order Service (via Gateway)
+```
+POST   /api/orders               # Create order
+GET    /api/orders               # Get user's orders
+GET    /api/orders/{id}          # Get order details
+PUT    /api/orders/{id}/status   # Update order status (Admin)
+GET    /api/orders/statistics    # Get order statistics
+```
 
-### Admin Endpoints
-- `GET /api/admin/users` - Get all users
-- `POST /api/admin/categories` - Create category
-- `PUT /api/admin/categories/{id}` - Update category
-- `DELETE /api/admin/categories/{id}` - Delete category
-- `PUT /api/admin/orders/{orderId}/status` - Update order status
+### Payment Service (via Gateway)
+```
+POST   /api/payments/process     # Process payment
+POST   /api/payments/stripe/webhook # Stripe webhook
+GET    /api/payments/{id}        # Get payment details
+GET    /api/payments/methods     # Get available payment methods
+```
 
-### Cache Management (Admin)
-- `DELETE /api/cache/all` - Clear all caches
-- `DELETE /api/cache/products` - Clear product caches
-- `DELETE /api/cache/categories` - Clear category caches
-- `DELETE /api/cache/carts` - Clear cart caches
-- `DELETE /api/cache/orders` - Clear order caches
+### Notification Service (via Gateway)
+```
+GET    /api/notifications        # Get user notifications
+PUT    /api/notifications/{id}/read # Mark as read
+POST   /api/notifications/preferences # Update preferences
+```
 
-## 🔐 Security
+## 🚀 Running Individual Services
 
-- JWT-based authentication
-- Role-based access control (USER, SELLER, ADMIN)
-- Password encryption using BCrypt
-- CORS configuration for frontend integration
-- Secure payment processing with Stripe
+### Start Infrastructure Only
+```bash
+# PostgreSQL, Redis, Kafka, Elasticsearch, etc.
+docker-compose -f docker-compose-infra.yml up -d
+```
 
-## ⚡ Performance Optimization
+### Start a Specific Service
+```bash
+cd microservices/[service-name]
+mvn spring-boot:run
+```
 
-### Redis Caching
-The application uses Redis for caching frequently accessed data:
-
-| Cache Region | TTL | Description |
-|--------------|-----|-------------|
-| products | 2 hours | Product listings and searches |
-| categories | 6 hours | Category listings |
-| carts | 30 minutes | User shopping carts |
-| orders | 1 hour | Order information |
-| userDetails | 15 minutes | User authentication data |
-| sellers | 30 minutes | Seller listings |
-
-Cache is automatically invalidated on data updates to ensure consistency.
-
-## 🏃‍♂️ Default Users
-
-The application creates default users on startup:
-
-| Username | Password | Role |
-|----------|----------|------|
-| user1 | password1 | USER |
-| seller1 | password2 | SELLER |
-| admin | adminPass | ADMIN |
-
+### Service Startup Order
+1. Eureka Server (wait for startup)
+2. Config Server
+3. API Gateway
+4. Other services (any order)
 
 ## 🧪 Testing
 
-### Backend Tests
+### Run All Tests
 ```bash
-cd ecom-backend
+mvn clean test
+```
+
+### Run Service-Specific Tests
+```bash
+cd microservices/[service-name]
 mvn test
 ```
 
-### Frontend Tests
+### Integration Tests
 ```bash
-cd ecom-frontend
-npm test
+mvn verify -P integration-tests
 ```
 
-## 📝 API Documentation
+## 📊 Monitoring & Observability
 
-Once the backend is running, access the Swagger UI at:
+### Metrics (Prometheus + Grafana)
+- Access Grafana: http://localhost:3001
+- Default credentials: admin/admin
+- Pre-configured dashboards for all services
+
+### Distributed Tracing (Zipkin)
+- Access Zipkin UI: http://localhost:9411
+- View request flows across services
+- Identify performance bottlenecks
+
+### Centralized Logging (ELK Stack)
+- Access Kibana: http://localhost:5601
+- Pre-configured index patterns
+- Search and analyze logs across all services
+
+### Health Checks
+Each service exposes health endpoints:
 ```
-http://localhost:8080/swagger-ui/index.html
+GET /actuator/health         # Basic health
+GET /actuator/health/liveness # Liveness probe
+GET /actuator/health/readiness # Readiness probe
 ```
 
-## 🚀 Deployment
+## 🔐 Security
 
-### Backend Deployment
-- Configure production database
-- Set environment variables for sensitive data
-- Build JAR: `mvn clean package`
-- Deploy to your preferred platform (AWS, Heroku, etc.)
+### Authentication Flow
+1. User registers/logs in via Auth Service
+2. Auth Service generates JWT token
+3. Token is included in subsequent requests
+4. API Gateway validates token
+5. Services verify token for authorization
 
-### Frontend Deployment
-- Build production bundle: `npm run build`
-- Deploy to static hosting (Netlify, Vercel, AWS S3, etc.)
+### Security Features
+- JWT-based authentication
+- Role-based access control (USER, SELLER, ADMIN)
+- API Gateway rate limiting
+- CORS configuration
+- Secure inter-service communication
+- Encrypted passwords (BCrypt)
+
+## 🏃‍♂️ Performance Optimization
+
+### Caching Strategy
+- **Redis**: Session management, cart data, frequently accessed data
+- **Spring Cache**: Method-level caching for expensive operations
+- **HTTP Caching**: ETags and cache headers
+
+### Database Optimization
+- **Connection Pooling**: HikariCP
+- **Query Optimization**: Indexed columns, pagination
+- **Database per Service**: Isolated data stores
+
+### Async Processing
+- **Kafka**: Event-driven architecture
+- **Async Methods**: Non-blocking operations
+- **WebSocket**: Real-time notifications
+
+## 📝 Development Guidelines
+
+### Adding a New Service
+1. Create service directory under `microservices/`
+2. Use provided service template
+3. Register with Eureka
+4. Add routing rules to API Gateway
+5. Update docker-compose.yml
+6. Add service documentation
+
+### Code Standards
+- Follow Spring Boot best practices
+- Use DTOs for API contracts
+- Implement proper error handling
+- Add comprehensive logging
+- Write unit and integration tests
+- Document APIs with OpenAPI
+
+## 🐛 Troubleshooting
+
+### Common Issues
+
+1. **Service won't start**
+   - Check if Eureka Server is running
+   - Verify database connections
+   - Check port conflicts
+
+2. **Cannot access service**
+   - Verify service is registered in Eureka
+   - Check API Gateway routing
+   - Ensure authentication token is valid
+
+3. **Database connection issues**
+   - Verify PostgreSQL is running
+   - Check credentials in configuration
+   - Ensure database is initialized
+
+### Useful Commands
+```bash
+# View logs for a specific service
+docker-compose logs -f [service-name]
+
+# Check service health
+curl http://localhost:[port]/actuator/health
+
+# List all registered services
+curl http://localhost:8761/eureka/apps
+
+# Clear Redis cache
+docker exec -it redis redis-cli FLUSHALL
+```
 
 ## 🤝 Contributing
 
 1. Fork the repository
-2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the branch (`git push origin feature/AmazingFeature`)
+2. Create feature branch (`git checkout -b feature/AmazingFeature`)
+3. Commit changes (`git commit -m 'Add AmazingFeature'`)
+4. Push to branch (`git push origin feature/AmazingFeature`)
 5. Open a Pull Request
 
----
+## 📄 License
+
+This project is licensed under the MIT License - see the LICENSE file for details.
+
+## 👥 Authors
+
+- Naman Parmar
+
+## 🙏 Acknowledgments
+
+- Spring Boot and Spring Cloud teams
+- Netflix OSS for Eureka
+- All open-source contributors 
